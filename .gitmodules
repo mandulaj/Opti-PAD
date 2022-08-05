@@ -1,0 +1,3 @@
+[submodule "Puzzle-A-Day-Solver"]
+	path = Puzzle-A-Day-Solver
+	url = https://github.com/mandulaj/Puzzle-A-Day-Solver
