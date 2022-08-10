@@ -11,12 +11,28 @@
 #include <stdio.h>
 #include <string.h>
 
+// #include <sys/random.h>
+
 extern problem_t problem_types[];
 
 #define GET_BIT(p, x, y) (!!((p << ((y)*8 + (x))) & 0x8000000000000000))
 
 #define SET_BIT(p, x, y) p |= (0x8000000000000000 >> ((y)*8 + (x)))
 #define CLEAR_BIT(p, x, y) p &= ~(0x8000000000000000 >> ((y)*8 + (x)))
+
+#define RANDOM_BLOCK_LENGTH 2048
+uint16_t RANDOM_BLOCK[RANDOM_BLOCK_LENGTH];
+
+uint16_t random16() {
+  static int position = RANDOM_BLOCK_LENGTH + 1;
+
+  if (position >= RANDOM_BLOCK_LENGTH) {
+    // getrandom(RANDOM_BLOCK, sizeof(uint16_t) * RANDOM_BLOCK_LENGTH, 0);
+    position = 0;
+  }
+
+  return RANDOM_BLOCK[position++];
+}
 
 inline bool is_valid_bit_position(piece_t p, int x, int y) {
   bool valid_r = false;
@@ -45,7 +61,7 @@ inline bool is_valid_bit_position(piece_t p, int x, int y) {
 
 piece_t attach_bit(piece_t p, uint32_t pos) {
   uint32_t c_pos = 0;
-  enum bit_direction next_direction = DIRECTION_RIGHT;
+  enum bit_direction next_direction = DIRECTION_UP;
   int x = 0;
   int y = 0;
 
@@ -54,8 +70,8 @@ piece_t attach_bit(piece_t p, uint32_t pos) {
 
   p = piece_sft_right(piece_sft_down(piece_origin(p)));
 
-  while (!GET_BIT(p, x, y + 1)) {
-    x++;
+  while (y < 7 && !GET_BIT(p, x + 1, y)) {
+    y++;
   }
 
   while (1) {
@@ -193,10 +209,12 @@ piece_t attach_bit(piece_t p, uint32_t pos) {
 
 */
 
-piece_t make_gene_piece(gene_t gene, uint32_t length) {
+piece_t gene_to_piece(gene_t gene) {
   piece_t p = 0x00;
+  uint32_t length = ((gene >> 14) & 0x3) + 3;
+  bool flip = !!((gene >> 13) & 0x1);
 
-  if (length > 7) {
+  if (length >= 7) {
     return 0xFFFFFFFFFFFFFFFF;
   }
   // First 2 bits (3 pieces)
@@ -220,11 +238,85 @@ piece_t make_gene_piece(gene_t gene, uint32_t length) {
     }
   }
 
-  return p;
+  if (flip)
+    return piece_origin(piece_flip(p));
+  else
+    return p;
 }
 
-void print_gene(gene_t gene, uint32_t length) {
-  for (int i = 16; i >= 0; i--) {
-    printf("%d  ", i);
+void print_gene(gene_t gene) {
+  for (int i = 15; i >= 0; i--) {
+    // printf("%d  ", i);
   }
+  for (int i = 15; i >= 0; i--) {
+    printf("%c", (gene >> i) & 0x01 ? '1' : '0');
+  }
+  printf("\n");
+}
+
+gene_t gene_make(uint32_t *positions, uint32_t len, bool flip) {
+  gene_t g = 0;
+  uint8_t gene_length = 0;
+
+  if (len >= 3 && len < 7) {
+    gene_length = len - 3;
+  } else {
+    gene_length = 0;
+  }
+
+  switch (gene_length) {
+  case 3:
+    g |= (positions[3] & 0xF) << 9;
+  case 2:
+    g |= (positions[2] & 0xF) << 5;
+  case 1:
+    g |= (positions[1] & 0x7) << 2;
+  case 0:
+    g |= (positions[0] & 0x3);
+  default:
+    break;
+  }
+
+  g |= gene_length << 14;
+
+  if (flip)
+    g |= 0x1 << 13;
+
+  return g;
+}
+
+gene_t gene_random(uint32_t len) {
+  gene_t g = random16();
+
+  return gene_set_length(g, len);
+}
+
+gene_t gene_mutate(gene_t gene, uint32_t iter) {
+  gene_t mask = 0x3FFF;
+
+  for (int i = 0; i < iter; i++) {
+    mask &= random16();
+  }
+  print_gene(mask);
+  return gene ^ mask;
+}
+
+gene_t gene_cross(gene_t gene1, gene_t gene2) {
+  gene_t mask = random16();
+
+  return (gene1 & mask) | (gene2 & ~mask);
+}
+
+gene_t gene_set_length(gene_t gene, uint32_t len) {
+
+  uint32_t gene_length = 0;
+
+  if (len >= 3 && len < 7) {
+    gene_length = len - 3;
+  } else {
+    gene_length = 0;
+  }
+  gene &= 0x3FFF;
+  gene |= gene_length << 14;
+  return gene;
 }

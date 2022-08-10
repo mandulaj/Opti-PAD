@@ -2,3 +2,7 @@ build
 .vscode
 
 main
+eval.so
+
+*.csv
+results
