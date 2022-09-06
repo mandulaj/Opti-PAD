@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <string.h>
 
-// #include <sys/random.h>
+#include <sys/random.h>
 
 extern problem_t problem_types[];
 
@@ -27,14 +27,14 @@ uint16_t random16() {
   static int position = RANDOM_BLOCK_LENGTH + 1;
 
   if (position >= RANDOM_BLOCK_LENGTH) {
-    // getrandom(RANDOM_BLOCK, sizeof(uint16_t) * RANDOM_BLOCK_LENGTH, 0);
+    getrandom(RANDOM_BLOCK, sizeof(uint16_t) * RANDOM_BLOCK_LENGTH, 0);
     position = 0;
   }
 
   return RANDOM_BLOCK[position++];
 }
 
-inline bool is_valid_bit_position(piece_t p, int x, int y) {
+static bool is_valid_bit_position(piece_t p, int x, int y) {
   bool valid_r = false;
   bool valid_l = false;
   bool valid_u = false;
