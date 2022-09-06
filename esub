@@ -1,0 +1,18 @@
+#!/bin/bash
+
+. /cluster/apps/local/env2lmod.sh
+
+
+module load  gcc/8.2.0 python/3.10.4
+
+#pip install -r requirements.txt
+
+N_THREADS=48
+MEM=512
+
+
+#bsub -n $N_THREADS -R "rusage[mem=$MEM]" "python3 ./main.py 0.02"
+#bsub -n $N_THREADS -R "rusage[mem=$MEM]" "./exhaustive > exhaustive.csv"
+#bsub -n $N_THREADS -R "rusage[mem=$MEM]" "python3 ./main.py 0.03"
+#bsub -n $N_THREADS -W 100:00 -R "rusage[mem=$MEM]" "python3 ./exhaustive.py"
+bsub -n $N_THREADS -R "model=XeonGold_6150" -W 100:00 -R "rusage[mem=$MEM]" "make AVX512=-mavx512f -j8; python3 ./exhaustive.py"
