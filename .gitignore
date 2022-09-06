@@ -2,7 +2,15 @@ build
 .vscode
 
 main
-eval.so
+eval
+exhaustive
+*.so
+
+exhaustive_results
 
 *.csv
 results
+
+*.png
+
+__pycache__
