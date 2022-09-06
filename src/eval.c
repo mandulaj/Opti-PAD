@@ -444,7 +444,7 @@ int main(int argc, char **argv) {
     }
   }
 
-  printf("Num: %d\n", num);
+  printf("Num: %ld\n", num);
 
   // FILE *fp4 = fopen("4-piece.txt", "w");
   // FILE *fp5 = fopen("5-piece.txt", "w");
@@ -494,7 +494,7 @@ int main(int argc, char **argv) {
     prob.piece_position_num[i] =
         make_positions(prob.pieces[i], prob.piece_props[i], prob.blank, NULL,
                        (struct solution_restrictions){true, true});
-    printf("%d, ", prob.piece_position_num[i]);
+    printf("%ld, ", prob.piece_position_num[i]);
   }
 
   printf("\n");
@@ -505,11 +505,11 @@ int main(int argc, char **argv) {
 
   printf("\n");
   for (int i = 0; i < 8; i++) {
-    printf("{%d, %s}, ", prob.piece_props[i].rotations,
+    printf("{%ld, %s}, ", prob.piece_props[i].rotations,
            prob.piece_props[i].asymetric ? "true" : "false");
   }
 
-  return;
+  return 0;
 
   uint32_t scores[7];
   struct solution_restrictions r = {true, true};
@@ -526,7 +526,7 @@ int main(int argc, char **argv) {
   init_solutions(&sol, &prob, r);
 
   for (int i = 0; i < 8; i++) {
-    printf("Sol id: %d\n", sol.sorted_sol_indexes[i]);
+    printf("Sol id: %ld\n", sol.sorted_sol_indexes[i]);
   }
 
   return 0;
