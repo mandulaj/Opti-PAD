@@ -41,11 +41,10 @@ N_PIECES_4 = 7
 N_PIECES_5 = 18
 N_PIECES_6 = 60
 
-N_CHUNKS=100000
+N_CHUNKS=100
 
 
 DESTINATION="exhaustive_results"
-DESTINATION="er"
 
 def main():
 
@@ -118,109 +117,7 @@ check_pieces.argtypes = [ndpointer(ctypes.c_size_t, flags='C_CONTIGUOUS'), ctype
 
 
 
-# test_pass_indiv = eval.test_pass_indiv
-# game_individual_to_problem = eval.game_individual_to_problem
-
-# test_pass_indiv.argtypes = [ctypes.POINTER(GameIndividual)]
-# test_pass_indiv.restype = ctypes.c_int
-
-# # eval_individual = eval.eval_individual
-# # eval_individual.argtypes = [ctypes.POINTER(GameIndividual), Sol_Restrictions]
-
-# print_genes = eval.print_genes
-# print_genes.argtypes = [ndpointer(ctypes.c_uint16, flags='C_CONTIGUOUS'), ctypes.c_size_t]
-
-
-# print_raw_pieces = eval.print_raw_pieces
-# print_raw_pieces.argtypes = [ndpointer(ctypes.c_uint16, flags='C_CONTIGUOUS'), ctypes.c_size_t]
-
-
-
-# eval_numpy_genes = eval.eval_numpy_genes
-# eval_numpy_genes.argtypes = [ndpointer(ctypes.c_uint16, flags='C_CONTIGUOUS'), ndpointer(ctypes.c_uint32, flags='C_CONTIGUOUS'), ctypes.c_size_t, ctypes.c_size_t, ctypes.c_size_t, Sol_Restrictions]
-
-# eval_numpy_individual = eval.eval_numpy_individual
-# eval_numpy_individual.argtypes = [ndpointer(ctypes.c_uint16, flags='C_CONTIGUOUS'), ndpointer(ctypes.c_uint32, flags='C_CONTIGUOUS'), ctypes.c_size_t, ctypes.c_size_t, Sol_Restrictions]
-
-
-# unique_pieces = eval.unique_pieces
-# unique_pieces.argtypes = [ndpointer(ctypes.c_uint16, flags='C_CONTIGUOUS'), ctypes.c_size_t]
-# unique_pieces.restype = ctypes.c_uint32
-
-
-
-# print_genome_color = eval.print_genome_color
-# print_genome_color.argtypes = [ndpointer(ctypes.c_uint16, flags='C_CONTIGUOUS'), ctypes.c_size_t, ctypes.c_size_t]
-
-
-# genome_to_hashes = eval.genome_to_hashes
-# genome_to_hashes.argtypes = [ndpointer(ctypes.c_uint16, flags='C_CONTIGUOUS'), ndpointer(ctypes.c_uint32, flags='C_CONTIGUOUS'), ctypes.c_size_t, ctypes.c_size_t]
-
-
-# print_gene_pieces_horizontal = eval.print_gene_pieces_horizontal
-# print_gene_pieces_horizontal.argtypes = [ndpointer(ctypes.c_uint16, flags='C_CONTIGUOUS'), ndpointer(ctypes.c_uint32, flags='C_CONTIGUOUS'), ctypes.c_size_t]
-
-
-
-
-
-
-
 if __name__ == "__main__":
     main()
 
 
-
-# n_pieces = 8
-# p = (ctypes.c_uint16 * n_pieces)()
-# test = GameIndividual(len(p), p )
-
-
-
-
-# array[0] = GameIndividual(len(p), p )
-
-
-# print(array[0].n_pieces)
-
-
-
-# p[0] = 0b1100001001001010
-# p[1] = 0b1000000000100101
-# p[2] = 0b1000000011100011
-# p[3] = 0b1000000001000110
-# p[4] = 0b1010000000000011
-# p[5] = 0b1000000010000011
-# p[6] = 0b1000000001100011
-# p[7] = 0b1000000000111010
-
-# # res = test_pass_indiv(test)
-
-# # print(f"Res: {res}")
-
-# for i in range(test.n_pieces):
-#     print(f"{test.genes[i]:b}")
-
-# res = eval_individual(test, restrictions)
-
-
-
-
-
-# def create_individuals(n):
-#     elems = (GameIndividual * n)()
-#     array = ctypes.cast(elems, ctypes.POINTER(GameIndividual))
-    
-#     for i in range(n):
-#         array[i].n_pieces = 8
-
-
-
-
-
-
-
-
-
-
-# print(f"Res: {res}")
