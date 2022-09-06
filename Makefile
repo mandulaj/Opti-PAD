@@ -3,7 +3,9 @@ CFLAGS_release = -O3
 CFLAGS_debug = -O0 -g
 BUILD=release
 
-CFLAGS=-Wall -std=c17 ${CFLAGS_${BUILD}} -mbmi2  -mavx2 -march=native -fopenmp -I ./src/inc -I ./Puzzle-A-Day-Solver/src/inc  -Lbuild -fPIC 
+AVX512=-mno-avx512f
+
+CFLAGS=-Wall -std=c17 ${CFLAGS_${BUILD}} ${AVX512} -mbmi2  -mavx2 -march=native -fopenmp -I ./src/inc -I ./Puzzle-A-Day-Solver/src/inc  -Lbuild -fPIC 
 
 BUILD_DIR=build
 $(shell mkdir -p ${BUILD_DIR})
@@ -18,7 +20,7 @@ all: dependencies
 
 .PHONY: dependencies
 dependencies:
-	$(MAKE) -C Puzzle-A-Day-Solver BUILD_DIR=../$(BUILD_DIR)
+	$(MAKE) -C Puzzle-A-Day-Solver AVX512=${AVX512} BUILD=${BUILD} BUILD_DIR=../$(BUILD_DIR)
 
 
 
