@@ -12,7 +12,7 @@ SRC_DIR=src
 
 .PHONY: all
 all: dependencies
-	$(MAKE) main eval.so
+	$(MAKE) main eval.so eval exhaustive exhaustive.so
 
 
 
@@ -31,6 +31,17 @@ main: $(BUILD_DIR)/solver.o $(BUILD_DIR)/board.o $(BUILD_DIR)/piece.o $(BUILD_DI
 	$(CC) $(CFLAGS) -o $@ $^
 
 eval.so: $(BUILD_DIR)/solver.o $(BUILD_DIR)/board.o $(BUILD_DIR)/piece.o $(BUILD_DIR)/problem.o $(BUILD_DIR)/utils.o $(BUILD_DIR)/printing.o $(BUILD_DIR)/gene.o $(BUILD_DIR)/eval.o
+	$(CC) $(CFLAGS) -shared -o $@ $^
+
+
+eval: $(BUILD_DIR)/solver.o $(BUILD_DIR)/board.o $(BUILD_DIR)/piece.o $(BUILD_DIR)/problem.o $(BUILD_DIR)/utils.o $(BUILD_DIR)/printing.o $(BUILD_DIR)/gene.o $(BUILD_DIR)/eval.o
+	$(CC) $(CFLAGS) -o $@ $^
+
+exhaustive: $(BUILD_DIR)/solver.o $(BUILD_DIR)/board.o $(BUILD_DIR)/piece.o $(BUILD_DIR)/problem.o $(BUILD_DIR)/utils.o $(BUILD_DIR)/printing.o $(BUILD_DIR)/gene.o  $(BUILD_DIR)/exhaustive.o
+	$(CC) $(CFLAGS) -o $@ $^
+
+
+exhaustive.so: $(BUILD_DIR)/solver.o $(BUILD_DIR)/board.o $(BUILD_DIR)/piece.o $(BUILD_DIR)/problem.o $(BUILD_DIR)/utils.o $(BUILD_DIR)/printing.o $(BUILD_DIR)/gene.o $(BUILD_DIR)/exhaustive.o
 	$(CC) $(CFLAGS) -shared -o $@ $^
 
 .PHONY: clean
